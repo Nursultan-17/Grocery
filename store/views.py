@@ -162,3 +162,6 @@ def productsByCategoryView(request, category_id):
         'category': category.name
     }
     return render(request=request, template_name='products.html', context=context)
+
+def about_us_view(request):
+    return render(request=request,template_name='about_us.html')
