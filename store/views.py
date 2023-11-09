@@ -100,12 +100,19 @@ def signOutView(request):
 
 
 def productsView(request):
-    context = {
-        'categories': Category.objects.all(),
-        'products': Product.objects.all(),
-        'category': 'All Products',
-        'Nickname': request.session['Nickname'],
-    }
+    if 'Nickname' in request.session.keys():
+        context = {
+            'categories': Category.objects.all(),
+            'products': Product.objects.all(),
+            'category': 'All Products',
+            'Nickname': request.session['Nickname'],
+        }
+    else:
+        context = {
+            'categories': Category.objects.all(),
+            'products': Product.objects.all(),
+            'category': 'All Products',
+        }
     return render(request=request, template_name='products.html', context=context)
 
 
@@ -120,22 +127,27 @@ def addToCartView(request, product_id):
 
 def cartDetailView(request):
     if request.method == 'GET':
-        context = {
-            'categories': Category.objects.all(),
-            'Nickname': request.session['Nickname'],
-        }
-        total = 0
-        if 'cart' in request.session.keys():
-            context['cart'] = []
-            count = 1
-            for product_id in request.session['cart']:
-                product = Product.objects.get(id=product_id)
-                product.count = count  # Создаем у объекта новый атрибут, его не будет в бд, только на этот вью
-                context['cart'].append(product)
-                count += 1
-                total += product.price
-        context['total'] = total
-        return render(request=request, template_name='cart.html', context=context)
+        if 'Nickname' in request.session.keys():
+            context = {
+                'categories': Category.objects.all(),
+                'Nickname': request.session['Nickname'],
+            }
+        else:
+            context = {
+                'categories': Category.objects.all(),
+            }
+            total = 0
+            if 'cart' in request.session.keys():
+                context['cart'] = []
+                count = 1
+                for product_id in request.session['cart']:
+                    product = Product.objects.get(id=product_id)
+                    product.count = count  # Создаем у объекта новый атрибут, его не будет в бд, только на этот вью
+                    context['cart'].append(product)
+                    count += 1
+                    total += product.price
+            context['total'] = total
+            return render(request=request, template_name='cart.html', context=context)
     elif request.method == 'POST':
         total = int(request.POST.get('total'))
         if request.user.wallet >= total:
@@ -174,17 +186,29 @@ def profileView(request):
 def productsByCategoryView(request, category_id):
     category = Category.objects.get(id=category_id)
     products = Product.objects.filter(category=category)
-    context = {
-        'categories': Category.objects.all(),
-        'products': products,
-        'category': category.name,
-        'Nickname': request.session['Nickname'],
-    }
+    if 'Nickname' in request.session.keys():
+        context = {
+            'categories': Category.objects.all(),
+            'products': products,
+            'category': category.name,
+            'Nickname': request.session['Nickname'],
+        }
+    else:
+        context = {
+            'categories': Category.objects.all(),
+            'products': products,
+            'category': category.name,
+        }
     return render(request=request, template_name='products.html', context=context)
 
 def about_us_view(request):
-    context = {
-        'categories': Category.objects.all(),
-        'Nickname': request.session['Nickname'],
-    }
+    if 'Nickname' in request.session.keys():
+        context = {
+            'categories': Category.objects.all(),
+            'Nickname': request.session['Nickname'],
+        }
+    else:
+        context = {
+            'categories': Category.objects.all(),
+        }
     return render(request=request,template_name='about_us.html',context=context)
