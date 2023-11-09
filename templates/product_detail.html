@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card" style="width: 30rem;">
+  <img src="{{product.image.url}}" class="card-img-top">
+  <div class="card-body">
+    <h5 class="card-title">{{product.name}}</h5>
+    <p class="card-text">Категорий - {{product.category}}</p>
+    <p class="card-text">Описание - {{product.description}}</p>
+    <p class="card-text">Производитель - {{product.manufacturer}}</p>
+    <p class="card-text">Дата изготовления - {{product.manufacturing_date}}</p>
+    <p class="card-text">Дата истечения срока - {{product.expired_date}}</p>
+    <p class="card-text">Цена - {{product.price}}тнг</p>
+     <button id="{{ product.id }}" class="btn btn-success"
+            onclick="addToCart(this.id, '{% url 'add_cart_url' product.id %}')">
+      Add To Cart
+      </button>
+  </div>
+</div>
+
+    <script>
+        function addToCart(button_id, url) {
+            let button = document.getElementById(button_id);
+            let request = new XMLHttpRequest();
+
+            request.onreadystatechange = function() {
+                if (request.readyState == 4) {
+                    button.innerHTML = 'Added!';
+                }
+            }
+
+            request.open('GET', url, true);
+            request.send(null);
+        }
+    </script>
+
+
+{% endblock %}

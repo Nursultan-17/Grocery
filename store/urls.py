@@ -12,6 +12,7 @@ urlpatterns = [
     path('cart_detail', cartDetailView, name='cart_detail_url'),
     path('profile', profileView, name='profile_url'),
     path('products/<int:category_id>', productsByCategoryView, name='products_by_category_url'),
-    path('about_us',about_us_view,name='about_us_url')
+    path('about_us',about_us_view,name='about_us_url'),
+    path('products_DT/<int:product_id>',productDetailView,name='product_dt_url'),
 
 ]

@@ -212,3 +212,17 @@ def about_us_view(request):
             'categories': Category.objects.all(),
         }
     return render(request=request,template_name='about_us.html',context=context)
+
+def productDetailView(request,product_id):
+    product = Product.objects.get(id=product_id)
+    print(HttpResponse())
+    if 'Nickname' in request.session.keys():
+        context = {
+            'product': product,
+            'Nickname': request.session['Nickname'],
+        }
+    else:
+        context = {
+            'product': product,
+        }
+    return render(request=request,template_name='product_detail.html',context=context)
