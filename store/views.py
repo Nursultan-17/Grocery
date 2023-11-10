@@ -12,7 +12,7 @@ def signInView(request):
 
         }
         return render(request=request, template_name='sign_in.html', context=context)
-    elif request.method == 'POST':
+    if request.method == 'POST':
         Nickname = request.POST.get('Nickname')
         email = request.POST.get('email')
         password = request.POST.get('password')
@@ -91,7 +91,7 @@ def signUpView(request):
                 'birth_date': birth_date,
                 'categories': Category.objects.all(),
             }
-            return render(request=request, template_name='sign_up.html', context=context)
+    return render(request=request, template_name='sign_up.html', context=context)
 
 
 def signOutView(request):
@@ -147,7 +147,7 @@ def cartDetailView(request):
                     count += 1
                     total += product.price
             context['total'] = total
-            return render(request=request, template_name='cart.html', context=context)
+        return render(request=request, template_name='cart.html', context=context)
     elif request.method == 'POST':
         total = int(request.POST.get('total'))
         if request.user.wallet >= total:
